@@ -15,3 +15,139 @@ body {
     height: 500px;
 }
 
+
+.form-wrapper {
+    background-color: white;
+    opacity: 96%;
+    width: 600px;
+    height: 250px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-weight: bolder;
+    font-size: 40px;
+    color: darkviolet;
+    margin-bottom: 5px;
+}
+
+
+input {
+    height: 30px;
+    display: flex;
+    flex: 1;
+    width: 400px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    margin-top: 15px;
+}
+
+input:focus {
+    transition: 1s;
+    border:none;
+    outline-color: #4169e1;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+button {
+    margin-top: 20px;
+    background-color: darkviolet;
+    color: white;
+    font-size: 40px;
+    border: none;
+    width: 170px;
+    height: 60px;
+    border-radius: 30px;
+}
+
+button:hover {
+    transition: 1.5s;
+    color: darkorange;
+    transform: scale(0.96); /* scale button to 96% of its original size */
+}
+
+label {
+    color: black;
+}
+
+.error {
+    color: orangered;
+    font-size: 20px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-weight: bold
+}
+
+#myTable {
+    width: 80%;
+    border-spacing: 0;
+    margin-top: 3rem;
+}
+
+#myTable th {
+    font-size: 1.5rem;
+    color: #f1f1f1;
+    border-collapse: separate;
+    padding: 14px 10px;
+}
+
+#myTable tr {
+    background-color: #4f4f4f;
+}
+
+#myTable thead tr {
+    background-color: royalblue;
+}
+
+#myTable td {
+    padding: 14px 10px;
+    /*cursor: pointer;*/
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+#myTable tr:nth-child(even){
+    background-color: #3f3f3f;
+}
+
+#myTable tr:hover {
+    border-radius: 4px;
+    background-color: #323232;
+    /*background-color: orange;*/
+    color: #7ca4cc;
+    transition: 0.5s;
+}
+
+#myTable thead tr:hover {
+    border-radius: 4px;
+    transition: 0.5s;
+    background-color: royalblue;
+}
+
+#myTable thead th:hover {
+    cursor: pointer;
+}
+
+.actionButtonsContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px
+}
+
+.actionButton {
+    text-decoration: none;
+    color: black;
+    background-color: orange;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    width: 100px;
+}
