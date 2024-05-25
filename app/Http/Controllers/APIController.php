@@ -59,7 +59,7 @@ class APIController extends Controller
 
     }
 
-    public function editPet(Request $request){
+    public function editPet(Request $request) {
 
         $validatedData = $request->validate([
             'id' => 'required|int',
@@ -96,6 +96,23 @@ class APIController extends Controller
                 return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
         }
 
+
+    }
+
+    public function deletePet($id) {
+
+        $response = Http::delete("https://petstore.swagger.io/v2/pet/{$id}");
+
+        switch ($response->status()) {
+            case 200:
+                return redirect('/')->with('message', 'Pet deleted successfully!');
+            case 400:
+                return redirect()->back()->withErrors(['errorMessage' => 'Invalid ID supplied']);
+            case 404:
+                return redirect()->back()->withErrors(['errorMessage' => 'Pet not found']);
+            default:
+                return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
+        }
 
     }
 

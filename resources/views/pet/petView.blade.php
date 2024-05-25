@@ -28,13 +28,13 @@
                     <td>{{$pet['category']['name'] ?? '---'}}</td>
                     <td>{{$pet['status'] ?? '---'}}</td>
                     <td class="actionButtonsContainer">
-                        <a class="actionButton" href="/pets/edit/{{$pet['id']}}">Edit</a>
-                        <a class="actionButton" href="/pets/1/edit">Delete</a>
-{{--                        <form action="/pets/1" method="POST" style="display: inline;">--}}
-{{--                            @csrf--}}
-{{--                            @method('DELETE')--}}
-{{--                            <button type="submit">Delete</button>--}}
-{{--                        </form>--}}
+                        <a class="actionButton button" href="/pets/edit/{{$pet['id']}}">Edit</a>
+{{--                        <a class="actionButton" href="/pets/1/edit">Delete</a>--}}
+                        <form action="/pets/{{$pet['id']}}" method="POST" style="">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="actionButton button buttonDelete">Delete</button>
+                        </form>
                     </td>
                 </tr>
             </tbody>
@@ -44,3 +44,24 @@
     @endif
 
 </x-layout>
+
+<style>
+    .button {
+        margin-top: 0px;
+        height: inherit;
+        font-weight: 200;
+        font-family: "Agency FB";
+    }
+
+    .button:hover {
+        transition: 1.5s;
+        transform: scale(0.96); /* scale button to 96% of its original size */
+        color: black;
+        cursor: pointer;
+    }
+
+    .buttonDelete {
+        background-color: orangered;
+    }
+
+</style>
