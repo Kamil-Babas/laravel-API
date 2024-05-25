@@ -20,43 +20,83 @@ class APIController extends Controller
 
     }
 
-    public function showPetView($id)
+    //fetch pet by ID
+    private function fetchPet($id)
     {
-        // nie udalo mi sie uzyskac kodu 400 bezposrednio z api, zawsze jest to 404 dlatego zaimplementowalem ponizsza logike
         $validator = Validator::make(['id' => $id], [
             'id' => 'required|integer|min:1'
         ]);
 
         if ($validator->fails()) {
-            return view('pet.petView')->with('errorMessage', '	Invalid ID supplied must be Integer at least 1');
+            return ['errorMessage' => 'Invalid ID supplied must be an integer at least 1'];
         }
-        //end
-
 
         $response = Http::get("https://petstore.swagger.io/v2/pet/{$id}");
 
         switch ($response->status()) {
-
             case 200:
-                $pet = $response->json();
-                return view('pet.petView', compact('pet'));
-
+                return ['pet' => $response->json()];
             case 400:
-                return view('pet.petView')->with('errorMessage', '	Invalid ID supplied');
-                // abort(400, 'Invalid ID supplied');
-
+                return ['errorMessage' => 'Invalid ID supplied'];
             case 404:
-                return view('pet.petView')->with('errorMessage', 'Pet not found');
-              // abort(404, 'Pet not found');
-
+                return ['errorMessage' => 'Pet not found'];
             default:
                 abort($response->status(), 'An error occurred');
         }
+    }
+
+    public function showPetView($id) {
+
+        $data = $this->fetchPet($id);
+        return view('pet.petView', $data);
 
     }
 
-    public function showPetEditForm(){
-        return view('pet.petEditForm');
+    public function showPetEditForm($id){
+
+        $data = $this->fetchPet($id);
+        return view('pet.petEditForm', $data);
+
+    }
+
+    public function editPet(Request $request){
+
+        $validatedData = $request->validate([
+            'id' => 'required|int',
+            'category_name' => 'string|max:255',
+            'name' => 'required|string|max:255',
+            'photoUrls' => 'required|string',
+        ]);
+
+        $photoUrls = explode(';', $validatedData['photoUrls']);
+
+        $petData = [
+            'id' => $validatedData['id'],
+            'category' => [
+                'id' => 0,
+                'name' => $validatedData['category_name'] ?? 'default-category-name',
+            ],
+            'name' => $validatedData['name'],
+            'photoUrls' => $photoUrls
+        ];
+
+
+        $response = Http::put("https://petstore.swagger.io/v2/pet", $petData);
+
+        switch ($response->status()) {
+            case 200:
+                return redirect('/')->with('message', 'Pet updated successfully!');
+            case 400:
+                return redirect()->back()->withErrors(['errorMessage' => 'Invalid ID supplied']);
+            case 404:
+                return redirect()->back()->withErrors(['errorMessage' => 'Pet not found']);
+            case 405:
+                return redirect()->back()->withErrors(['errorMessage' => 'Validation exception']);
+            default:
+                return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
+        }
+
+
     }
 
 }

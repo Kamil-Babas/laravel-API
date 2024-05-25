@@ -24,11 +24,11 @@
             <tbody>
                 <tr>
                     <td>{{$pet['id']}}</td>
-                    <td>{{$pet['name']}}</td>
-                    <td>{{$pet['category']['name']}}</td>
-                    <td>{{$pet['status']}}</td>
+                    <td>{{$pet['name'] ?? '---'}}</td>
+                    <td>{{$pet['category']['name'] ?? '---'}}</td>
+                    <td>{{$pet['status'] ?? '---'}}</td>
                     <td class="actionButtonsContainer">
-                        <a class="actionButton" href="/pets/1/edit">Edit</a>
+                        <a class="actionButton" href="/pets/edit/{{$pet['id']}}">Edit</a>
                         <a class="actionButton" href="/pets/1/edit">Delete</a>
 {{--                        <form action="/pets/1" method="POST" style="display: inline;">--}}
 {{--                            @csrf--}}
