@@ -29,7 +29,6 @@
                     <td>{{$pet['status'] ?? '---'}}</td>
                     <td class="actionButtonsContainer">
                         <a class="actionButton button" href="/pets/edit/{{$pet['id']}}">Edit</a>
-{{--                        <a class="actionButton" href="/pets/1/edit">Delete</a>--}}
                         <form action="/pets/{{$pet['id']}}" method="POST" style="">
                             @csrf
                             @method('DELETE')
@@ -47,10 +46,10 @@
 
 <style>
     .button {
-        margin-top: 0px;
+        margin-top: 0;
         height: inherit;
         font-weight: 200;
-        font-family: "Agency FB";
+        font-family: "Agency FB", serif;
     }
 
     .button:hover {

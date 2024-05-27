@@ -20,6 +20,23 @@ class APIController extends Controller
 
     }
 
+    public function showPetsByStatus(Request $request){
+
+        $validator = Validator::make(['pet_status' => $request['pet_status']], [
+            'pet_status' => 'required|string|in:available,pending,sold'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/')->withErrors(['pet_status' => 'Invalid status']);
+        }
+
+        $petStatus = $request['pet_status'];
+        $data = $this->fetchPetsByStatus($petStatus);
+
+        return view('pet.petsView', $data);
+    }
+
+
     //fetch pet by ID
     private function fetchPet($id)
     {
@@ -41,9 +58,28 @@ class APIController extends Controller
             case 404:
                 return ['errorMessage' => 'Pet not found'];
             default:
-                abort($response->status(), 'An error occurred');
+                return ['errorMessage' => 'An error occurred'];
         }
+
     }
+
+
+    public function fetchPetsByStatus($status)
+    {
+
+        $response = Http::get("https://petstore.swagger.io/v2/pet/findByStatus?status={$status}");
+
+        switch ($response->status()) {
+            case 200:
+                return ['pets' => $response->json()];
+            case 400:
+                return ['errorMessage' => 'Invalid status value'];
+            default:
+                return ['errorMessage' => 'An error occurred'];
+        }
+
+    }
+
 
     public function showPetView($id) {
 
@@ -51,6 +87,7 @@ class APIController extends Controller
         return view('pet.petView', $data);
 
     }
+
 
     public function showPetEditForm($id){
 

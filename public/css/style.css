@@ -18,7 +18,7 @@ body {
 
 .form-wrapper {
     background-color: white;
-    opacity: 96%;
+    /*opacity: 96%;*/
     width: 600px;
     height: 250px;
     border-radius: 10px;
@@ -150,4 +150,10 @@ label {
     border-radius: 10px;
     font-size: 1.6rem;
     width: 100px;
+}
+
+select {
+    width: 300px;
+    text-align: center;
+    font-size: 1.5rem;
 }
