@@ -7,6 +7,10 @@
         </div>
     @endif
 
+    @if(session()->has('successMessage'))
+        <h3>{{ session('successMessage') }}</h3>
+    @endif
+
     @if(isset($pet))
 
         <table id="myTable">

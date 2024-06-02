@@ -10,6 +10,8 @@ Route::get('/', fn () => view('index'));
 Route::get('/pets', [APIController::class, 'searchPetByID']);
 // show pets by status
 Route::get('/pets/find', [APIController::class, 'showPetsByStatus']);
+// create pet view
+Route::get('/pets/add', [APIController::class, 'showPetCreateForm']);
 // show pet's view
 Route::get('/pets/{id}', [APIController::class, 'showPetView']);
 
@@ -20,4 +22,6 @@ Route::put('/pets/edit', [APIController::class, 'editPet'])->name('edit-pet');
 // delete pet
 Route::delete('/pets/{id}',  [APIController::class, 'deletePet']);
 
+// create pet
+Route::post('/pets/add',  [APIController::class, 'createPet']);
 

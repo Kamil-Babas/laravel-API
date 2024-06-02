@@ -100,7 +100,7 @@ class APIController extends Controller
 
         $validatedData = $request->validate([
             'id' => 'required|int',
-            'category_name' => 'string|max:255',
+            'category_name' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'photoUrls' => 'required|string',
         ]);
@@ -147,6 +147,50 @@ class APIController extends Controller
                 return redirect()->back()->withErrors(['errorMessage' => 'Invalid ID supplied']);
             case 404:
                 return redirect()->back()->withErrors(['errorMessage' => 'Pet not found']);
+            default:
+                return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
+        }
+
+    }
+
+    public function showPetCreateForm() {
+        return view('pet.createPetView');
+    }
+
+    public function createPet(Request $request) {
+
+        $validatedData = $request->validate([
+            'category_name' => 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'photoUrls' => 'required|string',
+            'status' => 'nullable|string|in:available,pending,sold'
+        ]);
+
+        $photoUrls = explode(';', $validatedData['photoUrls']);
+
+        $petData = [
+            'category' => [
+                'id' => 0,
+                'name' => $validatedData['category_name'] ?? 'default-category-name',
+            ],
+            'name' => $validatedData['name'],
+            'photoUrls' => $photoUrls,
+            'tags' => [
+                [
+                'id' => 0,
+                'name' => 'string'
+                ]
+            ],
+            'status' => $validatedData['status'] ?? ''
+        ];
+
+        $response = Http::post('https://petstore.swagger.io/v2/pet', $petData);
+
+        switch ($response->status()) {
+            case 200:
+                return redirect("/pets/{$response->json('id')}")->with('successMessage', 'Pet created successfully!');
+            case 405:
+                return redirect()->back()->withErrors(['errorMessage' => 'Invalid input']);
             default:
                 return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
         }
