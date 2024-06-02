@@ -197,4 +197,45 @@ class APIController extends Controller
 
     }
 
+    public function showUploadImageForm($id) {
+        $data = $this->fetchPet($id);
+        return view('pet.uploadImageView', $data);
+    }
+
+    public function uploadImage(Request $request) {
+
+        $validatedData = $request->validate([
+            'id' => 'required|int',
+            'file' => 'nullable|file|mimes:jpeg,jpg,png,gif',
+            'additional_data' => 'nullable|string'
+        ]);
+
+        $file = $request->file('file');
+
+        $httpRequest = Http::attach(
+            'file',
+            file_get_contents($file->getRealPath()),
+            $file->getClientOriginalName()
+        )->asMultipart();
+
+        if(!empty($validatedData['additionalMetadata'])) {
+            $httpRequest = $httpRequest->withOptions([
+                'form_params' => [
+                    'additionalMetadata' => $validatedData['additionalMetadata'],
+                ],
+            ]);
+        }
+
+        $petId = $request->id;
+        $response = $httpRequest->post("https://petstore.swagger.io/v2/pet/{$petId}/uploadImage");
+
+        switch ($response->status()) {
+            case 200:
+                return redirect("/")->with('message', 'Image uploaded successfully!');
+            default:
+                return redirect()->back()->withErrors(['errorMessage' => 'An error occurred']);
+        }
+
+    }
+
 }

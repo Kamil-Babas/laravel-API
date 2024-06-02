@@ -33,6 +33,7 @@
                     <td>{{$pet['status'] ?? '---'}}</td>
                     <td class="actionButtonsContainer">
                         <a class="actionButton button" href="/pets/edit/{{$pet['id']}}">Edit</a>
+                        <a class="actionButton button buttonUpload" href="/pets/upload-image/{{$pet['id']}}">Upload image</a>
                         <form action="/pets/{{$pet['id']}}" method="POST" style="">
                             @csrf
                             @method('DELETE')
@@ -65,6 +66,10 @@
 
     .buttonDelete {
         background-color: orangered;
+    }
+
+    .buttonUpload {
+        background-color: green;
     }
 
 </style>
