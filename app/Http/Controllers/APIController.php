@@ -8,37 +8,9 @@ use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
 {
-    public function searchPetByID(Request $request){
-
-        $request->validate([
-            'pet_id' => 'required|integer|min:1'
-        ]);
-
-        $id = $request['pet_id'];
-
-        return redirect("/pets/{$id}"); // przekierowuje do showPetView()
-
-    }
-
-    public function showPetsByStatus(Request $request){
-
-        $validator = Validator::make(['pet_status' => $request['pet_status']], [
-            'pet_status' => 'required|string|in:available,pending,sold'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('/')->withErrors(['pet_status' => 'Invalid status']);
-        }
-
-        $petStatus = $request['pet_status'];
-        $data = $this->fetchPetsByStatus($petStatus);
-
-        return view('pet.petsView', $data);
-    }
-
 
     //fetch pet by ID
-    private function fetchPet($id)
+    public function fetchPet($id)
     {
         $validator = Validator::make(['id' => $id], [
             'id' => 'required|integer|min:1'
@@ -80,21 +52,6 @@ class APIController extends Controller
 
     }
 
-
-    public function showPetView($id) {
-
-        $data = $this->fetchPet($id);
-        return view('pet.petView', $data);
-
-    }
-
-
-    public function showPetEditForm($id){
-
-        $data = $this->fetchPet($id);
-        return view('pet.petEditForm', $data);
-
-    }
 
     public function editPet(Request $request) {
 
@@ -153,9 +110,6 @@ class APIController extends Controller
 
     }
 
-    public function showPetCreateForm() {
-        return view('pet.createPetView');
-    }
 
     public function createPet(Request $request) {
 
@@ -197,10 +151,6 @@ class APIController extends Controller
 
     }
 
-    public function showUploadImageForm($id) {
-        $data = $this->fetchPet($id);
-        return view('pet.uploadImageView', $data);
-    }
 
     public function uploadImage(Request $request) {
 

@@ -35,3 +35,11 @@
         <p>No pets found.</p>
     @endif
 </x-layout>
+
+<style>
+    .actionButton:hover {
+        transition: 1.5s;
+        transform: scale(0.96);
+        cursor: pointer;
+    }
+</style>
